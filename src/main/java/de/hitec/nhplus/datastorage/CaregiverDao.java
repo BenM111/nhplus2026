@@ -2,6 +2,7 @@ package de.hitec.nhplus.datastorage;
 
 import de.hitec.nhplus.model.Caregiver;
 import de.hitec.nhplus.utils.DateConverter;
+import de.hitec.nhplus.utils.EncryptionUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -21,25 +22,25 @@ public class CaregiverDao extends DaoImp<Caregiver>{
     protected Caregiver getInstanceFromResultSet(ResultSet result) throws SQLException {
         return new Caregiver(
                 result.getInt("caregiver_id"),
-                result.getString("first_name"),
-                result.getString("last_name"),
-                DateConverter.convertStringToLocalDate(result.getString("birth_date")),
-                result.getString("job_title"),
-                result.getString("phone_number"));
+                EncryptionUtil.decrypt(result.getString("first_name")),
+                EncryptionUtil.decrypt(result.getString("last_name")),
+                DateConverter.convertStringToLocalDate(EncryptionUtil.decrypt(result.getString("birth_date"))),
+                EncryptionUtil.decrypt(result.getString("job_title")),
+                EncryptionUtil.decrypt(result.getString("phone_number")));
     }
 
     @Override
     protected ArrayList<Caregiver> getListFromResultSet(ResultSet result) throws SQLException {
         ArrayList<Caregiver> list = new ArrayList<>();
         while (result.next()) {
-            LocalDate date = DateConverter.convertStringToLocalDate(result.getString("birth_date"));
+            LocalDate date = DateConverter.convertStringToLocalDate(EncryptionUtil.decrypt(result.getString("birth_date")));
             Caregiver caregiver = new Caregiver(
                     result.getInt("caregiver_id"),
-                    result.getString("first_name"),
-                    result.getString("last_name"),
+                    EncryptionUtil.decrypt(result.getString("first_name")),
+                    EncryptionUtil.decrypt(result.getString("last_name")),
                     date,
-                    result.getString("job_title"),
-                    result.getString("phone_number"));
+                    EncryptionUtil.decrypt(result.getString("job_title")),
+                    EncryptionUtil.decrypt(result.getString("phone_number")));
             list.add(caregiver);
         }
         return list;
@@ -51,11 +52,11 @@ public class CaregiverDao extends DaoImp<Caregiver>{
             final String SQL = "INSERT INTO caregiver (first_name, last_name, birth_date, phone_number, job_title) " +
                     "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = this.connection.prepareStatement(SQL);
-            preparedStatement.setString(1, caregiver.getFirstName());
-            preparedStatement.setString(2, caregiver.getSurname());
-            preparedStatement.setString(3, caregiver.getDateOfBirth());
-            preparedStatement.setString(4, caregiver.getPhoneNumber());
-            preparedStatement.setString(5, caregiver.getJobTitle());
+            preparedStatement.setString(1, EncryptionUtil.encrypt(caregiver.getFirstName()));
+            preparedStatement.setString(2, EncryptionUtil.encrypt(caregiver.getSurname()));
+            preparedStatement.setString(3, EncryptionUtil.encrypt(caregiver.getDateOfBirth()));
+            preparedStatement.setString(4, EncryptionUtil.encrypt(caregiver.getPhoneNumber()));
+            preparedStatement.setString(5, EncryptionUtil.encrypt(caregiver.getJobTitle()));
             return preparedStatement;
         } catch (SQLException exception) {
             exception.printStackTrace();
@@ -102,11 +103,11 @@ public class CaregiverDao extends DaoImp<Caregiver>{
                             "phone_number = ? " +
                             "WHERE caregiver_id = ?";
             PreparedStatement preparedStatement = this.connection.prepareStatement(SQL);
-            preparedStatement.setString(1, caregiver.getFirstName());
-            preparedStatement.setString(2, caregiver.getSurname());
-            preparedStatement.setString(3, caregiver.getDateOfBirth());
-            preparedStatement.setString(4, caregiver.getJobTitle());
-            preparedStatement.setString(5, caregiver.getPhoneNumber());
+            preparedStatement.setString(1, EncryptionUtil.encrypt(caregiver.getFirstName()));
+            preparedStatement.setString(2, EncryptionUtil.encrypt(caregiver.getSurname()));
+            preparedStatement.setString(3, EncryptionUtil.encrypt(caregiver.getDateOfBirth()));
+            preparedStatement.setString(4, EncryptionUtil.encrypt(caregiver.getJobTitle()));
+            preparedStatement.setString(5, EncryptionUtil.encrypt(caregiver.getPhoneNumber()));
             preparedStatement.setLong(6, caregiver.getCaregiverId());
             return preparedStatement;
         } catch (SQLException exception) {
