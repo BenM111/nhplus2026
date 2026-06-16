@@ -9,6 +9,8 @@ module de.hitec.nhplus {
     requires org.apache.pdfbox;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.datatype.jsr310;
+    requires java.desktop;
+    requires java.compiler;
 
     opens de.hitec.nhplus to javafx.fxml;
     opens de.hitec.nhplus.controller to javafx.fxml;
