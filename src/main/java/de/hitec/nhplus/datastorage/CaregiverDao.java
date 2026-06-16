@@ -11,6 +11,28 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/**
+ * Data Access Object (DAO) für die Entität {@link Caregiver}.
+ *
+ * <p>Diese Klasse übernimmt alle Datenbankoperationen für Pfleger
+ * (Caregiver), einschließlich:</p>
+ * <ul>
+ *     <li>Erstellen neuer Datensätze</li>
+ *     <li>Lesen einzelner oder aller Pfleger</li>
+ *     <li>Aktualisieren bestehender Pflegerdaten</li>
+ *     <li>Löschen von Pflegern</li>
+ * </ul>
+ *
+ * <p>Die Klasse arbeitet mit JDBC und verwendet SQL-Statements,
+ * um auf die Tabelle <code>caregiver</code> zuzugreifen.</p>
+ *
+ * <p>Die Konvertierung zwischen Datenbank-Strings und {@link java.time.LocalDate}
+ * erfolgt über {@link de.hitec.nhplus.utils.DateConverter}.</p>
+ *
+ * @author Amir
+ * @version 1.0
+ */
+
 public class CaregiverDao extends DaoImp<Caregiver>{
 
 

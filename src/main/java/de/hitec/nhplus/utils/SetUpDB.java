@@ -84,6 +84,22 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * Erstellt die Tabelle "caregiver" in der Datenbank, falls sie noch nicht existiert.
+     *
+     * <p>Die Tabelle enthält folgende Spalten:</p>
+     * <ul>
+     *     <li>caregiver_id (Primärschlüssel, automatisch inkrementiert)</li>
+     *     <li>first_name (Vorname, Pflichtfeld)</li>
+     *     <li>last_name (Nachname, Pflichtfeld)</li>
+     *     <li>birth_date (Geburtsdatum, Pflichtfeld)</li>
+     *     <li>phone_number (Telefonnummer, Pflichtfeld)</li>
+     *     <li>job_title (Berufsbezeichnung, Pflichtfeld)</li>
+     * </ul>
+     *
+     * @param connection aktive Datenbankverbindung
+     */
+
     private static void setUpTableCaregiver(Connection connection) {
         final String SQL = "CREATE TABLE IF NOT EXISTS caregiver (" +
                 "   caregiver_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -133,6 +149,16 @@ public class SetUpDB {
         }
     }
 
+    /**
+     * Erstellt Testdaten (Dummy-Datensätze) für die Tabelle "caregiver".
+     *
+     * <p>Diese Methode wird typischerweise zur Initialisierung der Datenbank
+     * oder für Testzwecke verwendet und fügt mehrere Beispiel-Caregiver hinzu.</p>
+     *
+     * <p>Die Daten werden über den {@link CaregiverDao} in die Datenbank eingefügt.</p>
+     *
+     * @throws RuntimeException indirekt möglich durch Datenbankoperationen (SQLException wird intern behandelt)
+     */
     private static void setUpCaregivers() {
         try {
             CaregiverDao dao = DaoFactory.getDaoFactory().createCaregiverDao();

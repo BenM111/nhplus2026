@@ -14,23 +14,18 @@
 <?import javafx.scene.text.Font?>
 
 <!--
-  STUB-Vorlage für die Pfleger-Übersicht (AB 04, Workstream B).
+  AllCaregiverView (Pfleger-Übersicht)
 
-  Dieses Skelett liefert TableView, Eingabefelder und Buttons. Was noch fehlt
-  und von euch ergänzt werden muss:
+  Diese View zeigt eine Tabelle aller Caregiver im System
+  und ermöglicht folgende Funktionen:
 
-    1. fx:controller="de.hitec.nhplus.controller.AllCaregiverController"
-       oben im <AnchorPane>-Tag ergänzen, sobald euer Controller existiert.
+  - Anzeige aller Pfleger in einer TableView
+  - Hinzufügen neuer Pfleger über Eingabefelder
+  - Löschen ausgewählter Pfleger
+  - Bearbeiten von Tabellendaten direkt in der Tabelle
 
-    2. onAction- und onEditCommit-Handler an Buttons und TableColumns
-       eintragen (siehe AllPatientView.fxml als Vorlage).
-
-    3. Spalten und Eingabefelder an die Akzeptanzkriterien eurer User
-       Stories aus AB 03 anpassen — der Stub zeigt nur Beispielspalten,
-       welche Attribute eine Pflegekraft hat, entscheidet eure Planung.
-
-  Orientiert euch beim Ausfüllen an AllPatientView.fxml — gleicher Aufbau,
-  nur andere Domäne.
+  Die View ist mit dem Controller:
+  de.hitec.nhplus.controller.AllCaregiverController verbunden.
 -->
 
 <AnchorPane prefHeight="500.0" prefWidth="855.0" stylesheets="@Application.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hitec.nhplus.controller.AllCaregiverController">
