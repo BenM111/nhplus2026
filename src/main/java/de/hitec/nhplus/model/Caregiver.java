@@ -5,12 +5,35 @@ import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.time.LocalDate;
-
+/**
+ * Repräsentiert einen Pfleger (Caregiver) im NHPlus-System.
+ *
+ * <p>Die Klasse erweitert die Klasse {@link Person} und enthält
+ * zusätzliche Informationen eines Pflegers wie Geburtsdatum,
+ * Berufsbezeichnung und Telefonnummer.</p>
+ *
+ * <p>Die Daten werden mit JavaFX Properties gespeichert,
+ * damit sie direkt mit UI-Elementen (z.B. TableView) verbunden
+ * werden können.</p>
+ *
+ * @author Amir
+ * @version 1.0
+ */
 public class Caregiver extends Person{
     private SimpleLongProperty caregiverId;
     private final SimpleStringProperty dateOfBirth;
     private final SimpleStringProperty jobTitle;
     private final SimpleStringProperty phoneNumber;
+
+    /**
+     * Erstellt einen neuen Pfleger ohne ID.
+     *
+     * @param firstName Vorname des Pflegers
+     * @param surname Nachname des Pflegers
+     * @param dateOfBirth Geburtsdatum des Pflegers
+     * @param jobTitle Berufsbezeichnung des Pflegers
+     * @param phoneNumber Telefonnummer des Pflegers
+     */
 
     public Caregiver(String firstName, String surname, LocalDate dateOfBirth, String jobTitle, String phoneNumber) {
         super(firstName, surname);
@@ -19,6 +42,17 @@ public class Caregiver extends Person{
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
     }
 
+    /**
+     * Erstellt einen Pfleger mit vorhandener ID.
+     *
+     * @param caregiverId eindeutige ID des Pflegers
+     * @param firstName Vorname des Pflegers
+     * @param surname Nachname des Pflegers
+     * @param dateOfBirth Geburtsdatum des Pflegers
+     * @param jobTitle Berufsbezeichnung des Pflegers
+     * @param phoneNumber Telefonnummer des Pflegers
+     */
+
     public Caregiver(long caregiverId, String firstName, String surname, LocalDate dateOfBirth, String jobTitle, String phoneNumber) {
         super(firstName, surname);
         this.caregiverId = new SimpleLongProperty(caregiverId);
@@ -26,6 +60,12 @@ public class Caregiver extends Person{
         this.jobTitle = new SimpleStringProperty(jobTitle);
         this.phoneNumber = new SimpleStringProperty(phoneNumber);
     }
+
+    /**
+     * Gibt die ID des Pflegers zurück.
+     *
+     * @return caregiverId des Pflegers
+     */
 
     public long getCaregiverId() {
         return caregiverId.get();

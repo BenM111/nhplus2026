@@ -19,6 +19,18 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
+/**
+ * Controller für die Pfleger-Übersicht (AllCaregiverView).
+ *
+ * <p>Verantwortlich für die Anzeige, Erstellung, Bearbeitung
+ * und Löschung von Caregiver-Daten in der Benutzeroberfläche.</p>
+ *
+ * <p>Die Daten werden über ein CaregiverDao aus der Datenbank geladen
+ * und in einer JavaFX TableView dargestellt.</p>
+ *
+ * @author Amir
+ * @version 1.0
+ */
 public class AllCaregiverController {
 
 
@@ -112,6 +124,12 @@ public class AllCaregiverController {
             this.textFieldJobTitle.textProperty().addListener(inputNewCaregiverListener);
         }
 
+        /**
+        * Wird aufgerufen, wenn der Vorname in der Tabelle bearbeitet wurde.
+        *
+        * @param event enthält die geänderte Caregiver-Instanz und den neuen Wert
+        */
+
         @FXML
         public void handleOnEditFirstname(TableColumn.CellEditEvent<Caregiver, String> event) {
             event.getRowValue().setFirstName(event.getNewValue());
@@ -119,10 +137,10 @@ public class AllCaregiverController {
         }
 
         /**
-         * When a cell of the column with surnames was changed, this method will be called, to persist the change.
-         *
-         * @param event Event including the changed object and the change.
-         */
+         * Aktualisiert den Nachnamen eines Caregivers nach einer Tabellenbearbeitung.
+        *
+        * @param event enthält die geänderte Caregiver-Instanz und den neuen Wert
+        */
         @FXML
         public void handleOnEditLastName(TableColumn.CellEditEvent<Caregiver, String> event) {
             event.getRowValue().setSurname(event.getNewValue());
@@ -130,21 +148,21 @@ public class AllCaregiverController {
         }
 
         /**
-         * When a cell of the column with dates of birth was changed, this method will be called, to persist the change.
-         *
-         * @param event Event including the changed object and the change.
-         */
+        * Aktualisiert den Nachnamen eines Caregivers nach einer Tabellenbearbeitung.
+        *
+        * @param event enthält die geänderte Caregiver-Instanz und den neuen Wert
+        */
         @FXML
         public void handleOnEditDateOfBirth(TableColumn.CellEditEvent<Caregiver, String> event) {
             event.getRowValue().setDateOfBirth(event.getNewValue());
             this.doUpdate(event);
         }
 
-        /**
-         * When a cell of the column with care levels was changed, this method will be called, to persist the change.
-         *
-         * @param event Event including the changed object and the change.
-         */
+         /**
+        * Aktualisiert den Jobtitel eines Caregivers nach Bearbeitung in der Tabelle.
+        *
+        * @param event enthält die geänderte Caregiver-Instanz und den neuen Wert
+        */
         @FXML
         public void handleOnEditJobTitle(TableColumn.CellEditEvent<Caregiver, String> event) {
             event.getRowValue().setJobTitle(event.getNewValue());
@@ -152,10 +170,10 @@ public class AllCaregiverController {
         }
 
         /**
-         * When a cell of the column with room numbers was changed, this method will be called, to persist the change.
-         *
-         * @param event Event including the changed object and the change.
-         */
+        * Aktualisiert die Telefonnummer eines Caregivers nach Bearbeitung in der Tabelle.
+        *
+        * @param event enthält die geänderte Caregiver-Instanz und den neuen Wert
+        */
         @FXML
         public void handleOnEditPhoneNumber(TableColumn.CellEditEvent<Caregiver, String> event){
             event.getRowValue().setPhoneNumber(event.getNewValue());
