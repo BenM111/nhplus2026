@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.layout.VBox?>
 <AnchorPane prefHeight="500.0" prefWidth="855.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.hitec.nhplus.controller.AllPatientController" stylesheets="@Application.css">
    <children>
       <TableView fx:id="tableView" editable="true" layoutX="31.0" layoutY="120.0" prefHeight="287.0" prefWidth="825.0" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="80.0">
@@ -55,13 +56,37 @@
                <HBox.margin>
                   <Insets />
                </HBox.margin>
-            </GridPane>
-            <HBox alignment="TOP_CENTER" prefWidth="190.0" spacing="10.0">
-               <children>
-                  <Button fx:id="buttonAdd" mnemonicParsing="false" onAction="#handleAdd" prefWidth="90.0" text="Hinzufügen" />
-                  <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#handleDelete" prefWidth="90.0" text="Löschen" />
-               </children>
-            </HBox>
+            </GridPane><VBox spacing="10" alignment="TOP_CENTER">
+
+             <HBox spacing="10">
+                 <children>
+                     <Button fx:id="buttonAdd"
+                             onAction="#handleAdd"
+                             prefWidth="90"
+                             text="Hinzufügen"/>
+
+                     <Button fx:id="buttonDelete"
+                             onAction="#handleDelete"
+                             prefWidth="90"
+                             text="Löschen"/>
+                 </children>
+             </HBox>
+
+             <HBox spacing="10">
+                 <children>
+                     <Button fx:id="buttonExport"
+                             onAction="#handleExport"
+                             prefWidth="90"
+                             text="PDF Export"/>
+
+                     <Button fx:id="buttonJsonExport"
+                             onAction="#handleJsonExport"
+                             prefWidth="90"
+                             text="JSON Export"/>
+                 </children>
+             </HBox>
+
+         </VBox>
          </children>
       </HBox>
       <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" prefWidth="200.0" spacing="25.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="5.0">
