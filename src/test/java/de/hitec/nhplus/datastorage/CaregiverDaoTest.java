@@ -18,6 +18,12 @@ public class CaregiverDaoTest {
     private static CaregiverDao dao;
     private static Connection connection;
 
+    /**
+     * Initialisiert die Testumgebung vor allen Tests.
+     *
+     * <p>Die Datenbank wird komplett neu aufgebaut und eine Verbindung
+     * sowie das CaregiverDao werden erstellt.</p>
+     */
     @BeforeAll
     static void setup() {
         // DB komplett neu aufsetzen
@@ -27,6 +33,14 @@ public class CaregiverDaoTest {
         dao = new CaregiverDao(connection);
     }
 
+    /**
+     * Testet das Anlegen eines neuen Caregivers in der Datenbank.
+     *
+     * <p>Es wird überprüft, ob der neu eingefügte Datensatz
+     * anschließend in der Datenbank vorhanden ist.</p>
+     *
+     * @throws SQLException falls ein Datenbankfehler auftritt
+     */
     @Test
     @Order(1)
     void testCreateCaregiver() throws SQLException {
@@ -49,6 +63,13 @@ public class CaregiverDaoTest {
         assertTrue(found, "Caregiver wurde nicht gespeichert");
     }
 
+    /**
+     * Testet das Auslesen aller Caregiver aus der Datenbank.
+     *
+     * <p>Es wird geprüft, ob mindestens ein Datensatz vorhanden ist.</p>
+     *
+     * @throws SQLException falls ein Datenbankfehler auftritt
+     */
     @Test
     @Order(2)
     void testReadAll() throws SQLException {
@@ -58,6 +79,14 @@ public class CaregiverDaoTest {
         assertTrue(all.size() > 0, "Es sollten Testdaten vorhanden sein");
     }
 
+    /**
+     * Testet das Aktualisieren eines bestehenden Caregivers.
+     *
+     * <p>Ein Datensatz wird geändert und anschließend überprüft,
+     * ob die Änderungen korrekt gespeichert wurden.</p>
+     *
+     * @throws SQLException falls ein Datenbankfehler auftritt
+     */
     @Test
     @Order(3)
     void testUpdateCaregiver() throws SQLException {
@@ -73,6 +102,14 @@ public class CaregiverDaoTest {
         assertEquals("UpdatedJob", updated.getJobTitle());
     }
 
+    /**
+     * Testet das Löschen eines Caregivers aus der Datenbank.
+     *
+     * <p>Ein neuer Datensatz wird erstellt, anschließend gelöscht
+     * und überprüft, ob er nicht mehr existiert.</p>
+     *
+     * @throws SQLException falls ein Datenbankfehler auftritt
+     */
     @Test
     @Order(4)
     void testDeleteCaregiver() throws SQLException {
