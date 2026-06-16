@@ -198,18 +198,41 @@ public class AllCaregiverController {
             }
         }
 
-        @FXML
-        public void handleDelete() {
-            Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
-            if (selectedItem != null) {
-                try {
-                    DaoFactory.getDaoFactory().createCaregiverDao().deleteById(selectedItem.getCaregiverId());
-                    this.tableView.getItems().remove(selectedItem);
-                } catch (SQLException exception) {
-                    exception.printStackTrace();
-                }
-            }
+    @FXML
+    private void handleDelete() {
+        Caregiver selectedItem = this.tableView.getSelectionModel().getSelectedItem();
+
+        if (selectedItem == null) {
+            return;
         }
+
+        try {
+            String usernameOfCaregiver = (selectedItem.getFirstName() + "." + selectedItem.getSurname())
+                    .toLowerCase()
+                    .replace(" ", "");
+
+            de.hitec.nhplus.datastorage.UserDao userDao = de.hitec.nhplus.datastorage.DaoFactory.getDaoFactory().createUserDao();
+
+            de.hitec.nhplus.model.User associatedUser = userDao.readByUsername(usernameOfCaregiver);
+
+            if (associatedUser != null) {
+                if (!"admin".equals(associatedUser.getRole())) {
+                    userDao.deleteById(associatedUser.getId()); // Nutzt die echte ID aus der User-Tabelle!
+                    System.out.println("Zugehöriger Benutzer '" + usernameOfCaregiver + "' (User-ID: " + associatedUser.getId() + ") wurde gelöscht.");
+                }
+            } else {
+                System.out.println("Kein passender Benutzer für " + usernameOfCaregiver + " in der Datenbank gefunden.");
+            }
+
+            this.dao.deleteById(selectedItem.getCaregiverId());
+
+            this.tableView.getItems().remove(selectedItem);
+            this.tableView.getSelectionModel().clearSelection();
+
+        } catch (SQLException exception) {
+            exception.printStackTrace();
+        }
+    }
 
         @FXML
         public void handleAdd() {
@@ -221,6 +244,27 @@ public class AllCaregiverController {
             String jobTitle = this.textFieldJobTitle.getText();
             try {
                 this.dao.create(new Caregiver(firstName, surname, date, jobTitle, phoneNumber));
+                String username = (firstName + "." + surname).toLowerCase().replace(" ", "");
+
+                de.hitec.nhplus.datastorage.UserDao userDao = de.hitec.nhplus.datastorage.DaoFactory.getDaoFactory().createUserDao();
+
+                if (userDao.readByUsername(username) == null) {
+                    de.hitec.nhplus.model.User newUser = new de.hitec.nhplus.model.User(
+                            null,
+                            username,
+                            "",
+                            "",
+                            LocalDate.now(),
+                            "user",
+                            LocalDate.now()
+                    );
+                    userDao.create(newUser);
+                    System.out.println("Benutzer erfolgreich automatisch angelegt: " + username);
+                } else {
+                    System.out.println("Benutzer " + username + " existiert bereits.");
+                }
+                readAllAndShowInTableView();
+                clearTextfields();
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }

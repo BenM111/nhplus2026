@@ -55,14 +55,30 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * Button in der Navigation, der die Sicht zur Verwaltung aller Benutzer aufruft.
+     * Sichtbar ausschließlich für Benutzer mit Administrator-Rechten.
+     */
     @FXML
     private Button btnAllUser;
 
+    /**
+     * Initialisiert den Controller nach dem Laden der FXML-Datei.
+     * Prüft über die aktuelle {@link Session}, ob der angemeldete Benutzer ein Administrator ist,
+     * und schaltet den Button für die Benutzerverwaltung entsprechend sichtbar oder unsichtbar.
+     */
     @FXML
     public void initialize() {
         btnAllUser.setVisible(Session.isAdmin());
     }
 
+    /**
+     * Event-Handler für den Klick auf den "Benutzerverwaltung"-Button.
+     * Lädt die FXML-Sicht {@code AllUserView.fxml} dynamisch über einen {@link FXMLLoader}
+     * und bettet sie im Zentrum des Haupt-Layouts ({@code mainBorderPane}) ein.
+     *
+     * @param event Das ausgelöste ActionEvent des Buttons.
+     */
     @FXML
     private void handleShowAllUser(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/AllUserView.fxml"));

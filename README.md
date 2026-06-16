@@ -78,3 +78,8 @@ Falls eure Datenbank durch Tests inkonsistent geworden ist, könnt ihr sie über
 ## Javadoc
 
 Für jede Klasse, die ihr neu implementiert, muss eine Javadoc erstellt werden. Details und ein Beispiel findet ihr in [AB 04 — Implementierung](doc/AB04-Implementierung.md#javadoc).
+
+## Anmeldedaten
+Benutzername: admin
+
+Passwort: admin

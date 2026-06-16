@@ -20,6 +20,13 @@ public class Main extends Application {
     private Stage primaryStage;
     private static Main instance;
 
+    /**
+     * Gibt die aktuelle, laufende Instanz der Hauptanwendung (Singleton-Muster) zurück.
+     * Ermöglicht anderen Controllern und Klassen den Zugriff auf zentrale Steuerungsfunktionen
+     * wie den Fensterwechsel.
+     *
+     * @return Die statische Instanz der {@link Main}-Klasse.
+     */
     public static Main getInstance() {
         return instance;
     }
@@ -31,6 +38,19 @@ public class Main extends Application {
         openLoginWindow();
     }
 
+    /**
+     * Lädt und öffnet das Login-Fenster der Anwendung.
+     * <p>
+     * Diese Methode initialisiert die Benutzeroberfläche für den Login, indem sie die
+     * entsprechende FXML-Datei ({@code LoginView.fxml}) lädt, die Szene auf der primären
+     * Bühne ({@code primaryStage}) platziert und wichtige Fenster-Eigenschaften wie den
+     * Titel, das Anwendungs-Icon (Favicon) sowie die feste Fenstergröße (nicht skalierbar) definiert.
+     * Zudem wird ein Event-Handler registriert, der beim Schließen des Fensters die
+     * gesamte Anwendung sauber beendet.
+     * </p>
+     * * @see javafx.fxml.FXMLLoader
+     * @see javafx.stage.Stage
+     */
     public void openLoginWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/LoginView.fxml"));

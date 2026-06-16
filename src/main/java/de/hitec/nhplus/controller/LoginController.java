@@ -12,17 +12,34 @@ import javafx.scene.control.TextField;
 
 import java.sql.SQLException;
 
+/**
+ * Der Controller für das Login-Fenster (LoginView).
+ * Handhabt die Authentifizierung von Benutzern, die Verifizierung von Passwörtern
+ * sowie den Prozess der initialen Passwortvergabe (Erstanmeldung) für neu angelegte Accounts.
+ *
+ * @author Luca Bullwinkel
+ */
 public class LoginController {
 
+    /**
+     * Das Data Access Object für den Zugriff auf die Benutzerdatenbank.
+     */
     private UserDao dao;
 
     @FXML
     private TextField usernameField;
+
     @FXML
     private PasswordField passwordField;
+
     @FXML
     private Label labelError;
 
+    /**
+     * Initialisiert den Controller nach dem Laden der FXML-Sicht.
+     * Erstellt die DAO-Instanz und fügt dem Benutzernamen-Feld einen Focus-Listener hinzu,
+     * um beim Verlassen des Feldes direkt zu prüfen, ob es sich um eine Erstanmeldung handelt.
+     */
     public void initialize() {
         this.dao = DaoFactory.getDaoFactory().createUserDao();
         usernameField.focusedProperty().addListener((observable, oldFocus, newFocus) -> {
@@ -32,6 +49,10 @@ public class LoginController {
         });
     }
 
+    /**
+     * Prüft, ob der eingegebene Benutzer existiert und noch kein Passwort besitzt.
+     * Ist dies der Fall, wird ein Hinweistext für die Erstanmeldung in der GUI eingeblendet.
+     */
     private void checkIfNewUser() {
         String username = usernameField.getText();
         if (username.isEmpty()) return;
@@ -47,6 +68,18 @@ public class LoginController {
         }
     }
 
+    /**
+     * Event-Handler für den Login-Button.
+     * Steuert den gesamten Authentifizierungsprozess:
+     * <ul>
+     * <li>Prüft, ob der Benutzer existiert.</li>
+     * <li>Falls der Benutzer noch kein Passwort hat, wird das eingegebene Passwort gehasht,
+     * gesalzen und als neues Passwort in der Datenbank hinterlegt (Erstanmeldung).</li>
+     * <li>Falls bereits ein Passwort existiert, wird die Eingabe mit dem gespeicherten Hash verifiziert.</li>
+     * </ul>
+     * Bei erfolgreicher Anmeldung wird das Login-Datum aktualisiert, der Benutzer in die {@link Session}
+     * eingetragen und das Hauptfenster der Anwendung geöffnet.
+     */
     @FXML
     private void handleLogin() {
         String username = usernameField.getText();

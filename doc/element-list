@@ -1,0 +1,6 @@
+module:de.hitec.nhplus
+de.hitec.nhplus
+de.hitec.nhplus.controller
+de.hitec.nhplus.datastorage
+de.hitec.nhplus.model
+de.hitec.nhplus.utils
