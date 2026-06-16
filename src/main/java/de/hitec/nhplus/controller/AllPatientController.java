@@ -2,6 +2,7 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.PatientDao;
+import de.hitec.nhplus.utils.PdfExportUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -15,7 +16,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import de.hitec.nhplus.model.Patient;
 import de.hitec.nhplus.utils.DateConverter;
+import de.hitec.nhplus.utils.PdfExportUtil;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 
@@ -51,6 +54,8 @@ public class AllPatientController {
 
     @FXML
     private Button buttonDelete;
+
+    @FXML Button buttonExport;
 
     @FXML
     private Button buttonAdd;
@@ -110,10 +115,12 @@ public class AllPatientController {
         this.tableView.setItems(this.patients);
 
         this.buttonDelete.setDisable(true);
+        this.buttonExport.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Patient>() {
             @Override
             public void changed(ObservableValue<? extends Patient> observableValue, Patient oldPatient, Patient newPatient) {;
                 AllPatientController.this.buttonDelete.setDisable(newPatient == null);
+                AllPatientController.this.buttonExport.setDisable(newPatient == null);
             }
         });
 
@@ -236,6 +243,14 @@ public class AllPatientController {
             } catch (SQLException exception) {
                 exception.printStackTrace();
             }
+        }
+    }
+
+    @FXML
+    public void handleExport() throws IOException {
+        Patient patient = this.tableView.getSelectionModel().getSelectedItem();
+        if (patient != null) {
+            PdfExportUtil.exportPatient(patient);
         }
     }
 
