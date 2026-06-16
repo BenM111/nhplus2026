@@ -33,6 +33,16 @@ public class MainWindowController {
         }
     }
 
+    /**
+     * Lädt die Ansicht zur Anzeige aller Pfleger und setzt sie in die Center-Region
+     * des Main BorderPanes.
+     *
+     * <p>Die View wird aus der FXML-Datei {@code AllCaregiverView.fxml}
+     * geladen und dynamisch in die Hauptoberfläche eingebettet.</p>
+     *
+     * @param event ActionEvent, ausgelöst durch den Button zum Öffnen der Pfleger-Übersicht
+     */
+
     @FXML
     private void handleShowAllCaregiver(ActionEvent event) {
         FXMLLoader loader = new FXMLLoader(Main.class.getResource("/de/hitec/nhplus/AllCaregiverView.fxml"));
