@@ -2,6 +2,7 @@ package de.hitec.nhplus.controller;
 
 import de.hitec.nhplus.datastorage.DaoFactory;
 import de.hitec.nhplus.datastorage.PatientDao;
+import de.hitec.nhplus.utils.JsonExportUtil;
 import de.hitec.nhplus.utils.PdfExportUtil;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -56,6 +57,9 @@ public class AllPatientController {
     private Button buttonDelete;
 
     @FXML Button buttonExport;
+
+    @FXML
+    private Button buttonJsonExport;
 
     @FXML
     private Button buttonAdd;
@@ -116,11 +120,13 @@ public class AllPatientController {
 
         this.buttonDelete.setDisable(true);
         this.buttonExport.setDisable(true);
+        this.buttonJsonExport.setDisable(true);
         this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Patient>() {
             @Override
             public void changed(ObservableValue<? extends Patient> observableValue, Patient oldPatient, Patient newPatient) {;
                 AllPatientController.this.buttonDelete.setDisable(newPatient == null);
                 AllPatientController.this.buttonExport.setDisable(newPatient == null);
+                AllPatientController.this.buttonJsonExport.setDisable(newPatient == null);
             }
         });
 
@@ -251,6 +257,19 @@ public class AllPatientController {
         Patient patient = this.tableView.getSelectionModel().getSelectedItem();
         if (patient != null) {
             PdfExportUtil.exportPatient(patient);
+        }
+    }
+
+    @FXML
+    public void handleJsonExport() {
+        Patient patient = this.tableView.getSelectionModel().getSelectedItem();
+
+        if (patient != null) {
+            try {
+                JsonExportUtil.exportPatient(patient);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

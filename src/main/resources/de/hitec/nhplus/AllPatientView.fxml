@@ -90,10 +90,19 @@
                         </children>
                     </HBox>
 
-                    <Button fx:id="buttonExport"
-                            onAction="#handleExport"
-                            prefWidth="190"
-                            text="PDF exportieren"/>
+                    <HBox spacing="10">
+                        <children>
+                            <Button fx:id="buttonExport"
+                                    onAction="#handleExport"
+                                    prefWidth="90"
+                                    text="PDF Export"/>
+
+                            <Button fx:id="buttonJsonExport"
+                                    onAction="#handleJsonExport"
+                                    prefWidth="90"
+                                    text="JSON Export"/>
+                        </children>
+                    </HBox>
 
                 </VBox>
             </children>

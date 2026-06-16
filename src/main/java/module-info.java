@@ -6,6 +6,8 @@ module de.hitec.nhplus {
     requires java.sql;
     requires org.xerial.sqlitejdbc;
     requires org.apache.pdfbox;
+    requires com.fasterxml.jackson.databind;
+    requires com.fasterxml.jackson.datatype.jsr310;
 
     opens de.hitec.nhplus to javafx.fxml;
     opens de.hitec.nhplus.controller to javafx.fxml;
