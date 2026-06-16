@@ -5,43 +5,19 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<!--
-  STUB-Vorlage für das Login-Fenster (AB 04, Workstream C).
-
-  Dieses Skelett liefert ein einfaches Formular: Benutzername-Feld,
-  Passwort-Feld, Login-Button und ein Label für Fehlermeldungen.
-
-  Was noch fehlt und von euch ergänzt werden muss:
-
-    1. fx:controller="de.hitec.nhplus.controller.LoginController"
-       oben im <VBox>-Tag ergänzen, sobald euer Controller existiert.
-
-    2. onAction-Handler am Login-Button eintragen (z. B.
-       onAction="#handleLogin").
-
-    3. Im Controller das passwordHash + salt aus der user-Tabelle laden
-       und mit PasswordUtil.verify(eingabe, hash, salt) prüfen.
-
-    4. Bei Erfolg: Scene-Wechsel auf der bestehenden Stage
-       (stage.setScene(mainScene)) — siehe Hinweis in AB 04.
-       Bei Fehler: labelError sichtbar machen und Meldung setzen.
-
-  Hinweis: Das PasswordField unterscheidet sich vom TextField darin,
-  dass die Eingabe als Punkte angezeigt wird (Standard-Verhalten).
--->
-<VBox alignment="CENTER" prefHeight="300.0" prefWidth="420.0" spacing="15.0" stylesheets="@Application.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
-   <padding>
-      <Insets bottom="40.0" left="60.0" right="60.0" top="40.0" />
-   </padding>
-   <children>
-      <Label text="NHPlus — Anmeldung">
-         <font>
-            <Font size="22.0" />
-         </font>
-      </Label>
-      <TextField fx:id="textFieldUsername" promptText="Benutzername" />
-      <PasswordField fx:id="passwordField" promptText="Passwort" />
-      <Button fx:id="buttonLogin" defaultButton="true" maxWidth="Infinity" mnemonicParsing="false" text="Anmelden" />
-      <Label fx:id="labelError" text="" textFill="#c0392b" visible="false" wrapText="true" />
-   </children>
+<VBox fx:controller="de.hitec.nhplus.controller.LoginController" alignment="CENTER" prefHeight="300.0" prefWidth="420.0" spacing="15.0" stylesheets="@Application.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="40.0" left="60.0" right="60.0" top="40.0" />
+    </padding>
+    <children>
+        <Label text="NHPlus — Anmeldung">
+            <font>
+                <Font size="22.0" />
+            </font>
+        </Label>
+        <TextField fx:id="usernameField" promptText="Benutzername" />
+        <PasswordField fx:id="passwordField" promptText="Passwort" />
+        <Button fx:id="buttonLogin" defaultButton="true" onAction="#handleLogin" maxWidth="Infinity" mnemonicParsing="false" text="Anmelden" />
+        <Label fx:id="labelError" text="" textFill="#c0392b" visible="false" wrapText="true" />
+    </children>
 </VBox>

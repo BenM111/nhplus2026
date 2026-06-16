@@ -18,6 +18,30 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Die Klasse PdfExportUtil ermöglicht den Export sämtlicher zu einer Person
+ * gespeicherter Daten in eine PDF-Datei.
+ *
+ * <p>
+ * Sie wurde zur Umsetzung der User Story „Auskunft personenbezogener Daten“
+ * eingeführt. Exportiert werden sowohl Stammdaten des Patienten als auch
+ * alle zugehörigen Behandlungsdaten.
+ * </p>
+ *
+ * <p>
+ * Die Klasse folgt dem Single-Responsibility-Prinzip (SRP), da sie
+ * ausschließlich für die Erstellung und Formatierung von PDF-Dokumenten
+ * verantwortlich ist.
+ * </p>
+ *
+ * <p>
+ * Der eigentliche Datenzugriff erfolgt weiterhin über die DAO-Schicht,
+ * wodurch eine klare Trennung zwischen Datenhaltung und Exportlogik
+ * gewährleistet wird.
+ * </p>
+ *
+ * @author Ben
+ */
 public class PdfExportUtil {
     private static final float MARGIN = 70f;
     private static final int FONT_SIZE = 12;
@@ -36,6 +60,16 @@ public class PdfExportUtil {
 
     private PdfExportUtil() {}
 
+    /**
+     * Öffnet einen Datei-Speicherdialog zur Auswahl des Speicherorts der PDF-Datei.
+     *
+     * <p>
+     * Die Methode kapselt die Benutzerinteraktion zur Dateiauswahl und stellt sicher,
+     * dass der Export nur nach expliziter Nutzerentscheidung durchgeführt wird.
+     * </p>
+     *
+     * @return die vom Benutzer ausgewählte Datei oder {@code null}, falls der Dialog abgebrochen wurde
+     */
     private static File setUpDocument() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Pdf Speichern");
@@ -45,7 +79,25 @@ public class PdfExportUtil {
         return fileChooser.showSaveDialog(null);
     }
 
-
+    /**
+     * Exportiert sämtliche zu einem Patienten gespeicherten Daten in eine PDF-Datei.
+     *
+     * <p>
+     * Die Methode bildet den zentralen Einstiegspunkt der PDF-Exportfunktion.
+     * Sie lädt alle benötigten Daten, erzeugt das Dokument, fügt Inhalte ein
+     * und speichert die fertige Datei am vom Benutzer gewählten Speicherort.
+     * </p>
+     *
+     * <p>
+     * Im Rahmen der User Story wird bewusst nur ein einzelner Patient exportiert,
+     * um eine gezielte Datenauskunft gemäß Datenschutzanforderungen zu ermöglichen.
+     * </p>
+     *
+     * @param patient der zu exportierende Patient
+     *
+     * @throws IOException falls beim Erstellen oder Speichern des PDF-Dokuments
+     *         ein Fehler auftritt
+     */
     public static void exportPatient(Patient patient) throws IOException {
         File file = setUpDocument();
         if(file == null) {
@@ -78,6 +130,17 @@ public class PdfExportUtil {
 
     }
 
+    /**
+     * Schreibt den Kopfbereich des PDF-Dokuments.
+     *
+     * <p>
+     * Der Header enthält den Titel des Exports und dient der strukturellen
+     * Einordnung des Dokuments als personenbezogene Datenauskunft.
+     * </p>
+     *
+     * @param currentContentStream aktiver PDF-Inhalt-Stream
+     * @throws IOException falls beim Schreiben in das PDF ein Fehler auftritt
+     */
     private static void writeHeader(PDPageContentStream currentContentStream) throws IOException {
         String text = "AUSKUNFT PERSONENBEZOGENER DATEN";
         float width =
@@ -91,6 +154,19 @@ public class PdfExportUtil {
         currYPos -= 35;
     }
 
+    /**
+     * Schreibt sämtliche Stammdaten eines Patienten in das PDF-Dokument.
+     *
+     * <p>
+     * Exportiert werden alle personenbezogenen Informationen, die in der
+     * Patiententabelle gespeichert sind.
+     * </p>
+     *
+     * @param currentContentStream aktiver PDF-Stream
+     * @param patient zu exportierender Patient
+     *
+     * @throws IOException falls beim Schreiben des Dokuments ein Fehler auftritt
+     */
     private static void writePatientData(PDPageContentStream currentContentStream,Patient patient) throws IOException {
         currYPos -= 35;
 
@@ -117,6 +193,20 @@ public class PdfExportUtil {
         currYPos -= 40;
     }
 
+    /**
+     * Schreibt sämtliche Behandlungsdaten eines Patienten in das PDF-Dokument.
+     *
+     * <p>
+     * Die Methode ergänzt die exportierten Stammdaten um alle gespeicherten
+     * Behandlungseinträge und ermöglicht dadurch eine vollständige
+     * Datenauskunft.
+     * </p>
+     *
+     * @param currentContentStream aktiver PDF-Stream
+     * @param treatments Liste aller Behandlungen des Patienten
+     *
+     * @throws IOException falls beim Schreiben des Dokuments ein Fehler auftritt
+     */
     private static void writeTreatments(PDPageContentStream currentContentStream, List<Treatment> treatments) throws IOException {
 
         writeText(currentContentStream, 0, currYPos, "Behandlungen", FONT_BOLD);
@@ -168,6 +258,18 @@ public class PdfExportUtil {
         }
     }
 
+    /**
+     * Lädt alle Behandlungen eines Patienten aus der Datenbank.
+     *
+     * <p>
+     * Die Methode dient der Trennung zwischen Datenbeschaffung und
+     * PDF-Erzeugung. Dadurch bleibt die Exportlogik unabhängig von der
+     * konkreten Datenbankimplementierung.
+     * </p>
+     *
+     * @param pid eindeutige Patienten-ID
+     * @return Liste aller zugehörigen Behandlungen
+     */
     private static List<Treatment> loadTreatments(long pid) {
         try {
             return DaoFactory.getDaoFactory()
@@ -179,6 +281,17 @@ public class PdfExportUtil {
         }
     }
 
+    /**
+     * Fügt eine Fußzeile mit dem Erstellungsdatum in das PDF ein.
+     *
+     * <p>
+     * Dies dient der Nachvollziehbarkeit des Exportzeitpunkts und ist relevant
+     * für Datenschutz- und Dokumentationsanforderungen.
+     * </p>
+     *
+     * @param currentContentStream aktiver PDF-Inhalt-Stream
+     * @throws IOException falls beim Schreiben in das PDF ein Fehler auftritt
+     */
     private static void writeFooter(PDPageContentStream currentContentStream) throws IOException {
         currYPos = FOOTER_Y_START;
         LocalDate currentDate = LocalDate.now();
@@ -189,6 +302,26 @@ public class PdfExportUtil {
         writeText(currentContentStream, 315, currYPos,"Auszug erstellt am: " + formattedDate, FONT_NORMAL);
     }
 
+    /**
+     * Schreibt formatierten Text an eine bestimmte Position im PDF-Dokument.
+     *
+     * <p>
+     * Die Methode kapselt die wiederholte PDFBox-Logik zur Textausgabe und
+     * unterstützt Zeilenumbrüche innerhalb eines Textblocks.
+     * </p>
+     *
+     * <p>
+     * Dadurch wird die Exportlogik in Teile gekleinert (SRP) und die
+     * Wartbarkeit verbessert.
+     * </p>
+     *
+     * @param currentContentStream aktiver PDF-Inhalt-Stream
+     * @param displacement horizontale Verschiebung relativ zum linken Rand
+     * @param yPos vertikale Startposition
+     * @param text auszugebender Text
+     * @param font verwendete Schriftart
+     * @throws IOException falls beim Schreiben in das PDF ein Fehler auftritt
+     */
     private static void writeText(PDPageContentStream currentContentStream, float displacement, float yPos, String text,PDType1Font font) throws IOException {
 
         currentContentStream.setFont(font, FONT_SIZE);

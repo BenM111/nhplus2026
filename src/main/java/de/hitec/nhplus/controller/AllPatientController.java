@@ -252,6 +252,21 @@ public class AllPatientController {
         }
     }
 
+    /**
+     * Startet den PDF-Export für den aktuell ausgewählten Patienten.
+     *
+     * <p>
+     * Die Methode wird durch den Benutzer über die grafische Oberfläche
+     * ausgelöst und delegiert die eigentliche Exportlogik an die Klasse
+     * {@link PdfExportUtil}.
+     * </p>
+     *
+     * <p>
+     * Durch diese Trennung bleibt der Controller ausschließlich für die
+     * Benutzerinteraktion verantwortlich, während die Exportlogik in einer
+     * eigenen Utility-Klasse gekapselt wird.
+     * </p>
+     */
     @FXML
     public void handleExport() throws IOException {
         Patient patient = this.tableView.getSelectionModel().getSelectedItem();
@@ -260,6 +275,19 @@ public class AllPatientController {
         }
     }
 
+    /**
+     * Startet den JSON-Export für den aktuell ausgewählten Patienten.
+     *
+     * <p>
+     * Die Methode wird über die Benutzeroberfläche ausgelöst und übergibt
+     * den ausgewählten Patienten an die Klasse {@link JsonExportUtil}.
+     * </p>
+     *
+     * <p>
+     * Die Trennung von Controller- und Exportlogik unterstützt die
+     * Wartbarkeit der Anwendung und folgt dem Single-Responsibility-Prinzip.
+     * </p>
+     */
     @FXML
     public void handleJsonExport() {
         Patient patient = this.tableView.getSelectionModel().getSelectedItem();
